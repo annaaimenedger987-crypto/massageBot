@@ -16,7 +16,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from config import BOT_TOKEN, MASTER_ID
+from config import BOT_TOKEN, MASTER_ID, DEMO_MODE
 
 
 # =========================
@@ -247,7 +247,7 @@ load_data()
 @dp.message(Command("start"))
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
-    if message.from_user.id == MASTER_ID:
+    if DEMO_MODE or message.from_user.id == MASTER_ID:
         await message.answer("Админ-режим ⚙️", reply_markup=admin_kb)
     else:
         await message.answer("Я бот онлайн-записи 💫", reply_markup=client_kb)
@@ -794,4 +794,5 @@ if __name__ == "__main__":
     finally:
         if os.path.exists(LOCK_FILE):
             os.remove(LOCK_FILE)
+
 
