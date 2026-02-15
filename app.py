@@ -82,7 +82,7 @@ def load_data():
         overrides = {}
         appointments = {}
         contacts = {"phone": "", "address": ""}
-
+        demo_admin_users = set()
 
 # =========================
 # 3) Кнопки
@@ -815,6 +815,7 @@ if __name__ == "__main__":
     finally:
         if os.path.exists(LOCK_FILE):
             os.remove(LOCK_FILE)
+
 
 
 
