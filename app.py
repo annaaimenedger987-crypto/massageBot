@@ -43,7 +43,7 @@ services = []       # [{"name":"Массаж","price":80,"duration":60}, ...]
 overrides = {}      # {"2026-02-15": None | ["10:00","10:30"...]}
 appointments = {}   # {"2026-02-15": [ {booking}, {booking} ]}
 contacts = {"phone": "", "address": ""}
-
+import os
 DATA_FILE = os.path.join(os.getcwd(), "data.json")
 
 
@@ -794,3 +794,4 @@ if __name__ == "__main__":
     finally:
         if os.path.exists(LOCK_FILE):
             os.remove(LOCK_FILE)
+
