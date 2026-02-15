@@ -247,10 +247,31 @@ load_data()
 @dp.message(Command("start"))
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
-    if DEMO_MODE or message.from_user.id == MASTER_ID:
-        await message.answer("Админ-режим ⚙️", reply_markup=admin_kb)
+
+    if DEMO_MODE:
+        kb = ReplyKeyboardMarkup(
+            keyboard=[
+                [KeyboardButton(text="👑 Демо админ")],
+                [KeyboardButton(text="👤 Демо клиент")]
+            ],
+            resize_keyboard=True
+        )
+        await message.answer("Выбери режим DEMO:", reply_markup=kb)
+        return
+
+    if message.from_user.id == MASTER_ID:
+        await message.answer("👑 Админ-режим ⚙️", reply_markup=admin_kb)
     else:
-        await message.answer("Я бот онлайн-записи 💫", reply_markup=client_kb)
+        await message.answer("🤖 Я бот онлайн-записи 🗓", reply_markup=client_kb)
+
+@dp.message(F.text == "👑 Демо админ")
+async def demo_admin(message: Message):
+    await message.answer("👑 Админ-панель", reply_markup=admin_kb)
+
+
+@dp.message(F.text == "👤 Демо клиент")
+async def demo_client(message: Message):
+    await message.answer("👤 Клиентский режим", reply_markup=client_kb)
 
 
 # =========================
@@ -794,5 +815,6 @@ if __name__ == "__main__":
     finally:
         if os.path.exists(LOCK_FILE):
             os.remove(LOCK_FILE)
+
 
 
