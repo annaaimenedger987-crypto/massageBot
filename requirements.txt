@@ -1,2 +1,1 @@
 aiogram==3.*
-python-dotenv==1.*
