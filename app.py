@@ -46,7 +46,7 @@ contacts = {"phone": "", "address": ""}
 import os
 DATA_FILE = os.path.join(os.getcwd(), "data.json")
 
-
+demo_admin_users = set()
 # =========================
 # 2) Сохранение/загрузка данных
 # =========================
@@ -82,7 +82,7 @@ def load_data():
         overrides = {}
         appointments = {}
         contacts = {"phone": "", "address": ""}
-        demo_admin_users = set()
+        
 
 # =========================
 # 3) Кнопки
@@ -103,6 +103,7 @@ client_kb = ReplyKeyboardMarkup(
         [KeyboardButton(text="📅 Записаться")],
         [KeyboardButton(text="💆‍♀️ Услуги и цены")],
         [KeyboardButton(text="📍 Контакты")],
+        [KeyboardButton(text="👀 Демо режим мастера")],
     ],
     resize_keyboard=True,
 )
@@ -296,6 +297,11 @@ async def show_services(message: Message):
         text += f"{i}) {s['name']} — {s['price']} BYN — {s['duration']} мин\n"
     await message.answer(text)
 
+# ===== Демо режим мастера =====
+@dp.message(F.text == "👀 Демо режим мастера")
+async def demo_admin_mode(message: Message):
+    demo_admin_users.add(message.from_user.id)
+    await message.answer("🔧 Демо админ-режим включён", reply_markup=admin_kb)
 
 # =========================
 # 9) Админ: настройка контактов
@@ -815,6 +821,7 @@ if __name__ == "__main__":
     finally:
         if os.path.exists(LOCK_FILE):
             os.remove(LOCK_FILE)
+
 
 
 
