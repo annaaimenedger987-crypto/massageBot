@@ -44,7 +44,6 @@ overrides = {}      # {"2026-02-15": None | ["10:00","10:30"...]}
 appointments = {}   # {"2026-02-15": [ {booking}, {booking} ]}
 contacts = {"phone": "", "address": ""}
 
-import os
 DATA_FILE = os.path.join(os.getcwd(), "data.json")
 
 
