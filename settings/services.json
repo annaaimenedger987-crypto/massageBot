@@ -1,0 +1,5 @@
+[
+  {"name": "Экспресс-консультация", "price": 35, "duration_minutes": 30},
+  {"name": "Основная услуга", "price": 80, "duration_minutes": 60},
+  {"name": "Расширенная услуга", "price": 120, "duration_minutes": 90}
+]

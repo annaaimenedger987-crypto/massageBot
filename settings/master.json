@@ -1,0 +1,36 @@
+{
+  "business_name": "SoftFlow Demo",
+  "timezone": "Europe/Minsk",
+  "currency": "BYN",
+  "booking_window_days": 30,
+  "minimum_notice_hours": 2,
+  "reminder_hours": [24, 2],
+  "slot_step_minutes": 30,
+  "contacts": {
+    "phone": "+375 29 000-00-00",
+    "address": "Орша",
+    "note": "Точный адрес сообщается после подтверждения записи"
+  },
+  "weekly_schedule": {
+    "1": {"working": true, "start": "09:00", "end": "18:00", "breaks": [["13:00", "14:00"]]},
+    "2": {"working": true, "start": "09:00", "end": "18:00", "breaks": [["13:00", "14:00"]]},
+    "3": {"working": true, "start": "09:00", "end": "18:00", "breaks": [["13:00", "14:00"]]},
+    "4": {"working": true, "start": "09:00", "end": "18:00", "breaks": [["13:00", "14:00"]]},
+    "5": {"working": true, "start": "09:00", "end": "18:00", "breaks": [["13:00", "14:00"]]},
+    "6": {"working": true, "start": "10:00", "end": "16:00", "breaks": []},
+    "7": {"working": false, "start": null, "end": null, "breaks": []}
+  },
+  "texts": {
+    "welcome": "Добро пожаловать в SoftFlow Demo. Здесь можно выбрать услугу и записаться на свободное время.",
+    "privacy": "Нажимая «Подтвердить запись», вы соглашаетесь на обработку имени, телефона и Telegram ID только для организации записи."
+  },
+  "icons": {
+    "book": "",
+    "calendar": "",
+    "services": "",
+    "contacts": "",
+    "back": "",
+    "confirm": "",
+    "cancel": ""
+  }
+}
