@@ -7,7 +7,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 
-from .booking import parse_breaks, parse_hours
+from .booking import callback_time, parse_breaks, parse_hours
 from .states import DaySettings, ManualBooking
 from .storage import SlotBusyError
 from .texts import appointment_text
@@ -40,6 +40,13 @@ def build_master_router(database, booking_service, settings, master_id):
                 [button("Настроить день", "day:start", "primary")],
                 [button("Режим клиента", "master:client")],
             ]
+        )
+
+    @router.message(F.from_user.id == master_id, Command("start", "menu", "cancel"))
+    async def master_menu(message: Message, state: FSMContext):
+        await state.clear()
+        await message.answer(
+            settings["texts"]["welcome"], reply_markup=reply_menu(True)
         )
 
     @router.message(Command("admin"))
@@ -176,7 +183,7 @@ def build_master_router(database, booking_service, settings, master_id):
     async def manual_slot(callback: CallbackQuery, state: FSMContext):
         if not allowed(callback):
             return await deny(callback)
-        await state.update_data(slot=callback.data.rsplit(":", 1)[1])
+        await state.update_data(slot=callback_time(callback.data, "manual:slot:"))
         await state.set_state(ManualBooking.name)
         await callback.message.edit_text("Введите имя клиента:")
         await callback.message.answer("Ожидаю имя.", reply_markup=ReplyKeyboardRemove())

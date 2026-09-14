@@ -13,6 +13,7 @@ from aiogram.types import (
     ReplyKeyboardRemove,
 )
 
+from .booking import callback_time
 from .notifications import notify_master
 from .states import ClientBooking, ClientCancel, ClientMove
 from .storage import SlotBusyError
@@ -39,7 +40,7 @@ def build_client_router(database, booking_service, settings, master_id):
         markup = reply_menu(getattr(target.from_user, "id", 0) == master_id)
         await target.answer(text, reply_markup=markup)
 
-    @router.message(Command("start"))
+    @router.message(Command("start", "menu", "cancel"))
     async def start(message: Message, state: FSMContext):
         await send_menu(message, state)
 
@@ -91,7 +92,7 @@ def build_client_router(database, booking_service, settings, master_id):
 
     @router.callback_query(ClientBooking.slot, F.data.startswith("book:slot:"))
     async def choose_slot(callback: CallbackQuery, state: FSMContext):
-        value = callback.data.rsplit(":", 1)[1]
+        value = callback_time(callback.data, "book:slot:")
         data = await state.get_data()
         service = database.service(data["service_id"])
         day = date.fromisoformat(data["date"])
@@ -322,7 +323,9 @@ def build_client_router(database, booking_service, settings, master_id):
         item = database.appointment(data["appointment_id"])
         day = date.fromisoformat(data["date"])
         start_at, end_at = booking_service.make_interval(
-            day, callback.data.rsplit(":", 1)[1], item["duration_minutes"]
+            day,
+            callback_time(callback.data, "move_slot:"),
+            item["duration_minutes"],
         )
         try:
             updated = database.move(

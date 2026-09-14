@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 from pathlib import Path
 
-from bot.booking import BookingService, parse_breaks, parse_hours
+from bot.booking import BookingService, callback_time, parse_breaks, parse_hours
 from bot.storage import Database, SlotBusyError
 
 SETTINGS = {
@@ -109,6 +109,10 @@ class BookingTests(unittest.TestCase):
         ]
         self.assertNotIn("15:00", slots)
         self.assertNotIn("15:30", slots)
+
+    def test_callback_time_preserves_hours_and_minutes(self):
+        self.assertEqual(callback_time("book:slot:09:30", "book:slot:"), "09:30")
+        self.assertEqual(callback_time("manual:slot:18:00", "manual:slot:"), "18:00")
 
     def test_client_sees_only_own_active_bookings(self):
         own = self.create("09:00", client_id=10)

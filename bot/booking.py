@@ -7,6 +7,15 @@ def parse_local(value, day, tz):
     return datetime.combine(day, parsed, tzinfo=tz)
 
 
+def callback_time(data: str, prefix: str) -> str:
+    """Extract and validate the complete HH:MM value after a callback prefix."""
+    if not data.startswith(prefix):
+        raise ValueError("Unexpected callback prefix")
+    value = data[len(prefix) :]
+    time.fromisoformat(value)
+    return value
+
+
 class BookingService:
     def __init__(self, database, settings):
         self.db = database

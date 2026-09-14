@@ -4,7 +4,7 @@ import logging
 from contextlib import suppress
 
 from aiogram import Bot, Dispatcher
-from aiogram.types import ErrorEvent
+from aiogram.types import BotCommand, ErrorEvent
 
 from bot.booking import BookingService
 from bot.client import build_client_router
@@ -69,6 +69,13 @@ async def main():
         return True
 
     identity = await bot.get_me()
+    await bot.set_my_commands(
+        [
+            BotCommand(command="start", description="Открыть главное меню"),
+            BotCommand(command="menu", description="Вернуться в главное меню"),
+            BotCommand(command="cancel", description="Отменить текущее действие"),
+        ]
+    )
     logging.getLogger("softflow").info("Запущен бот @%s", identity.username)
     reminders = asyncio.create_task(
         reminder_loop(bot, database, booking_service, SETTINGS)
